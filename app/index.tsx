@@ -37,6 +37,7 @@ const ScreenPrincipal = () => {
         <View style={{ flex: 1, justifyContent: 'center' }}>
             {
                 !image?
+                
                 <CameraView style={{flex: 1}}
                     facing= {type}
                     flash={flash}
