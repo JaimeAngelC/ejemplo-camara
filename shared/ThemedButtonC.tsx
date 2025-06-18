@@ -14,7 +14,7 @@ const ButtonCamara = ({ onPress, iconName, style, color = 'cyan' }: Props) => {
         <TouchableOpacity
             onPress={onPress}
             style={style}
-            className='px-[10px] py-[10px] items-center flex-row justify-center rounded-full bg-[#17202A]'
+            className='px-[10px] py-[10px] items-center justify-center rounded-full bg-[#16365c]'
         >
             <Ionicons name={iconName} size={25} color={color} />
         </TouchableOpacity>
