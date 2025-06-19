@@ -19,7 +19,10 @@ const index = () => {
       <View className='items-center'>
         <Text className='text-6xl'>HOME</Text>
 
-        <Image source={getImageSource()} className='bg-slate-900 w-[150px] h-[150px] rounded-[75px] border-[3px]' />
+        <Image
+          source={getImageSource()}
+          className='bg-slate-900 w-[150px] h-[150px] rounded-3xl'
+          resizeMode="cover" />
       </View>
       <View className='p-5' />
       <Pressable className='bg-slate-700 p-4 rounded-lg items-center' onPress={() => router.push('/camara')}>

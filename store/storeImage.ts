@@ -6,7 +6,7 @@ type imagenes = {
 }
 
 export const useStoreImagen = create<imagenes>((set) => ({
-    url: '',
+    url: null,
     guardarUrl: (value) => set({ url: value })
 }
 ));

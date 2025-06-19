@@ -15,8 +15,6 @@ const ScreenPrincipal = () => {
     const [flash, setFlash] = useState<FlashMode>('off');
     const cameraRef = useRef(null);
     //const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
-
-
     const setImagenes = useStoreImagen(state => state.guardarUrl);
 
     useEffect(() => {
