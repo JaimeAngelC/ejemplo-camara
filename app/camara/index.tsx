@@ -1,4 +1,4 @@
-import { View, Image } from 'react-native';
+import { View, Image, SafeAreaView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { CameraType, CameraView, FlashMode, Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
@@ -9,11 +9,11 @@ import * as ImagePicker from 'expo-image-picker'
 import { useStoreImagen } from '@/store/storeImage';
 
 const ScreenPrincipal = () => {
-    const [hasCameraPermission, setHasCameraPermission] = useState(null);
-    const [image, setImage] = useState(null);
+    const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+    const [image, setImage] = useState<string | null>(null);
     const [type, setType] = useState<CameraType>('back');
     const [flash, setFlash] = useState<FlashMode>('off');
-    const cameraRef = useRef(null);
+    const cameraRef = useRef<CameraView | null>(null);
     //const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
     const setImagenes = useStoreImagen(state => state.guardarUrl);
 
@@ -26,7 +26,7 @@ const ScreenPrincipal = () => {
     }, []);
 
     const takePicture = async () => {
-        if (cameraRef) {
+        if (cameraRef.current) {
             try {
                 const data = await cameraRef.current.takePictureAsync();
                 setImage(data.uri)
@@ -73,7 +73,7 @@ const ScreenPrincipal = () => {
     }
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             {
                 !image ?
                     <View style={{ flex: 1 }}>
@@ -139,7 +139,7 @@ const ScreenPrincipal = () => {
                         </View>
                 }
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
