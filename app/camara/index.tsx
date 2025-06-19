@@ -5,6 +5,8 @@ import * as MediaLibrary from 'expo-media-library';
 import ThemedButtonC from '@/shared/ThemedButtonC';
 import ThemedButtonG from '@/shared/ThemedButtonG';
 import { router } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker'
+import { useStoreImagen } from '@/store/storeImage';
 
 const ScreenPrincipal = () => {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -12,7 +14,11 @@ const ScreenPrincipal = () => {
     const [type, setType] = useState<CameraType>('back');
     const [flash, setFlash] = useState<FlashMode>('off');
     const cameraRef = useRef(null);
-    
+    //const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
+
+
+    const setImagenes = useStoreImagen(state => state.guardarUrl);
+
     useEffect(() => {
         (async () => {
             MediaLibrary.requestPermissionsAsync();
@@ -25,7 +31,6 @@ const ScreenPrincipal = () => {
         if (cameraRef) {
             try {
                 const data = await cameraRef.current.takePictureAsync();
-                console.log(data)
                 setImage(data.uri)
             } catch (error) {
                 console.log(error)
@@ -37,11 +42,12 @@ const ScreenPrincipal = () => {
         if (image) {
             try {
                 await MediaLibrary.createAssetAsync(image);
-                alert('Picture save');
+                setImagenes(image);
                 setImage(null);
             } catch (error) {
                 console.log(error);
             }
+            router.dismiss();
         }
     }
 
@@ -51,6 +57,21 @@ const ScreenPrincipal = () => {
 
     const handredReverse = () => {
         setType(current => current === 'back' ? 'front' : 'back')
+    }
+
+    const pickImageAsync = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [5, 5],
+            quality: 1,
+        });
+        if (result.canceled) return;
+        result.assets.forEach((asset) => {
+            //setSelectedImage(asset.uri);
+            setImagenes(asset.uri);
+        });
+        router.dismiss();
     }
 
     return (
@@ -75,7 +96,7 @@ const ScreenPrincipal = () => {
                             iconName='flash-sharp'
                             style={{ position: 'absolute', top: 40, right: 32 }}
                             color={flash === 'off' ? 'cyan' : 'yellow'}
-                        />                       
+                        />
 
                     </View>
                     :
@@ -102,7 +123,7 @@ const ScreenPrincipal = () => {
                         <View>
                             {/* BOTON PARA ABRIR IMAGENES GUARDADAS */}
                             <ThemedButtonC
-                                onPress={() => { }}
+                                onPress={pickImageAsync}
                                 iconName='images-sharp'
                                 style={{ position: 'absolute', bottom: 60, left: 32 }}
                             />
@@ -116,7 +137,7 @@ const ScreenPrincipal = () => {
                                 iconName='repeat-sharp'
                                 style={{ position: 'absolute', bottom: 60, right: 32 }}
                                 color={type === 'back' ? 'cyan' : 'yellow'}
-                            />                            
+                            />
                         </View>
                 }
             </View>
